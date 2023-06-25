@@ -8,8 +8,8 @@ import {
   Delete,
 } from '@nestjs/common';
 import { DiagnosticEvaluationService } from './diagnostic-evaluation.service';
-import { CreateDiagnosticEvaluationDto } from './dto/create-diagnostic-evaluation.dto';
-import { UpdateDiagnosticEvaluationDto } from './dto/update-diagnostic-evaluation.dto';
+import { CreateEvaluationDto } from './dto/create-diagnostic-evaluation.dto';
+import { UpdateEvaluationDto } from './dto/update-diagnostic-evaluation.dto';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Evaluación y diagnóstico')
@@ -20,7 +20,7 @@ export class DiagnosticEvaluationController {
   ) {}
 
   @Post()
-  create(@Body() createDiagnosticEvaluationDto: CreateDiagnosticEvaluationDto) {
+  create(@Body() createDiagnosticEvaluationDto: CreateEvaluationDto) {
     return this.diagnosticEvaluationService.create(
       createDiagnosticEvaluationDto,
     );
@@ -39,7 +39,7 @@ export class DiagnosticEvaluationController {
   @Patch(':id')
   update(
     @Param('id') id: string,
-    @Body() updateDiagnosticEvaluationDto: UpdateDiagnosticEvaluationDto,
+    @Body() updateDiagnosticEvaluationDto: UpdateEvaluationDto,
   ) {
     return this.diagnosticEvaluationService.update(
       +id,

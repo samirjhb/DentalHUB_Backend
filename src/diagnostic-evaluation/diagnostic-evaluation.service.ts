@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { CreateDiagnosticEvaluationDto } from './dto/create-diagnostic-evaluation.dto';
-import { UpdateDiagnosticEvaluationDto } from './dto/update-diagnostic-evaluation.dto';
+import { CreateEvaluationDto } from './dto/create-diagnostic-evaluation.dto';
+import { UpdateEvaluationDto } from './dto/update-diagnostic-evaluation.dto';
 
 @Injectable()
 export class DiagnosticEvaluationService {
-  create(createDiagnosticEvaluationDto: CreateDiagnosticEvaluationDto) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  create(createDiagnosticEvaluationDto: CreateEvaluationDto) {
     return 'This action adds a new diagnosticEvaluation';
   }
 
@@ -16,7 +17,8 @@ export class DiagnosticEvaluationService {
     return `This action returns a #${id} diagnosticEvaluation`;
   }
 
-  update(id: number, updateDiagnosticEvaluationDto: UpdateDiagnosticEvaluationDto) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  update(id: number, _updateDiagnosticEvaluationDto: UpdateEvaluationDto) {
     return `This action updates a #${id} diagnosticEvaluation`;
   }
 

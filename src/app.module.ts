@@ -7,6 +7,7 @@ import { TreatmentPlanModule } from './treatment-plan/treatment-plan.module';
 import { TreatmentModule } from './treatment/treatment.module';
 import { FollowUpModule } from './follow-up/follow-up.module';
 import { BillingModule } from './billing/billing.module';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
@@ -14,6 +15,8 @@ import { BillingModule } from './billing/billing.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    //Conection mongodb
+    MongooseModule.forRoot(process.env.MONGO_CONNECTION_TEST),
     SpecialistModule,
     PatientModule,
     DiagnosticEvaluationModule,
