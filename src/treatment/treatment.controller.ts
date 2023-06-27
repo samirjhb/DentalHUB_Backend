@@ -6,12 +6,16 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { TreatmentService } from './treatment.service';
 import { CreateTreatmentDto } from './dto/create-treatment.dto';
 import { UpdateTreatmentDto } from './dto/update-treatment.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/utils/jwt-auth.guard';
 
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @ApiTags('Tratamiento')
 @Controller('treatment')
 export class TreatmentController {

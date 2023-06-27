@@ -6,12 +6,16 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { DiagnosticEvaluationService } from './diagnostic-evaluation.service';
 import { CreateEvaluationDto } from './dto/create-diagnostic-evaluation.dto';
 import { UpdateEvaluationDto } from './dto/update-diagnostic-evaluation.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/utils/jwt-auth.guard';
 
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @ApiTags('Evaluación y diagnóstico')
 @Controller('diagnostic-evaluation')
 export class DiagnosticEvaluationController {

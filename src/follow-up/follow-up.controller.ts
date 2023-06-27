@@ -6,11 +6,15 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { FollowUpService } from './follow-up.service';
 import { CreateFollowUpDto } from './dto/create-follow-up.dto';
 import { UpdateFollowUpDto } from './dto/update-follow-up.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/utils/jwt-auth.guard';
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @ApiTags('Registro y seguimiento')
 @Controller('follow-up')
 export class FollowUpController {
