@@ -18,7 +18,7 @@ import { JwtStrategy } from './auth/utils/jwt.strategy';
       isGlobal: true,
     }),
     //Conection mongodb
-    MongooseModule.forRoot(process.env.MONGO_CONNECTION_TEST),
+    MongooseModule.forRoot(process.env.MONGO_CONNECTION_PRODUCTION),
     SpecialistModule,
     PatientModule,
     DiagnosticEvaluationModule,

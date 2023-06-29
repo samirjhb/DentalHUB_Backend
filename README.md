@@ -63,8 +63,36 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+## Paso a Paso
+
+```bash
+
+#Subir DockerFile a DockerHub
+$ docker build -t samirjhb/api-dental-hub .
+
+$ docker push samirjhb/api-dental-hub
+
+# Irse a la carpeta de K8S para crear el deploymet
+$ kubectl create -f deployment.yaml
+
+# Verificar el PODS
+$ kubectl get pods -o wide
+
+#Seleccionar el POD a revisar 
+$ kubectl logs nestjs-k8s-786566ccf7-c2dl7
+
+# Posteriomente  creacion del servicio 
+$ kubectl create -f service.yaml
+
+#Verificacion del service 
+$ kubectl get service
+
+
+```
+
 ## Author
 
 - Samir Hadechni  - [ 🧑🏻‍💻](https://github.com/samirjhb)
 - Christian Garcerant  - [🧑🏻‍💻](https://github.com/Christgrant98)
+- Cristian  Vargas  - [🧑🏻‍💻](https://github.com/Cristianv10)
 
