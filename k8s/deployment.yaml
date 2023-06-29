@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-dental-hub
+spec:
+  selector:
+    matchLabels:
+      app: api-dental-hub
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: api-dental-hub
+    spec:
+      containers:
+        - name: api-dental-hub
+          image: samirjhb/api-dental-hub
+          ports:
+            - containerPort: 3000
+          resources:
+            limits:
+              cpu: "1"
+              memory: "1Gi"
