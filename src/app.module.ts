@@ -10,6 +10,7 @@ import { BillingModule } from './billing/billing.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { JwtStrategy } from './auth/utils/jwt.strategy';
+import { WhatsappModule } from './whatsapp/whatsapp.module';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { JwtStrategy } from './auth/utils/jwt.strategy';
       isGlobal: true,
     }),
     //Conection mongodb
-    MongooseModule.forRoot(process.env.MONGO_CONNECTION_PRODUCTION),
+    MongooseModule.forRoot(process.env.MONGO_CONNECTION_TEST),
     SpecialistModule,
     PatientModule,
     DiagnosticEvaluationModule,
@@ -27,6 +28,7 @@ import { JwtStrategy } from './auth/utils/jwt.strategy';
     FollowUpModule,
     BillingModule,
     AuthModule,
+    WhatsappModule,
   ],
   controllers: [],
   providers: [JwtStrategy],

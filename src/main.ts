@@ -32,6 +32,7 @@ async function bootstrap() {
     .addTag('Tratamiento')
     .addTag('Registro y seguimiento')
     .addTag('Facturacion')
+    .addTag('Whatsapp')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('documentation', app, document);
