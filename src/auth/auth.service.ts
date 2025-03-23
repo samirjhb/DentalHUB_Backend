@@ -10,22 +10,26 @@ import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectModel(Auth.name)
-    private readonly authModel: Model<AuthDocument>,
+    @InjectModel(Auth.name) private readonly authModel: Model<AuthDocument>,
     private jwtService: JwtService,
   ) {}
 
-  //Register
   async register(userObject: RegisterAuthDto) {
     const { password } = userObject;
     const plainToHash = await hash(password, 10);
     userObject = { ...userObject, password: plainToHash };
-    return this.authModel.create(userObject);
+    const newUser = await this.authModel.create(userObject);
+
+    const payload = { id: newUser._id, name: newUser.name };
+    const token = this.jwtService.sign(payload);
+
+    const data = { user: newUser, token };
+
+    return data;
   }
 
-  //Login
   async login(userObjectLogin: LoginAuthDto) {
-    const { email, password } = userObjectLogin; //http
+    const { email, password } = userObjectLogin;
     const findUser = await this.authModel.findOne({ email });
     if (!findUser) throw new HttpException('USER_NOT_FOUND', 404);
 
@@ -35,10 +39,7 @@ export class AuthService {
     const payload = { id: findUser._id, name: findUser.name };
     const token = this.jwtService.sign(payload);
 
-    const data = {
-      user: findUser,
-      token,
-    };
+    const data = { user: findUser, token };
 
     return data;
   }

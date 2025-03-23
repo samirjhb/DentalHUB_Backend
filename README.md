@@ -93,6 +93,3 @@ $ kubectl get service
 ## Author
 
 - Samir Hadechni  - [ 🧑🏻‍💻](https://github.com/samirjhb)
-- Christian Garcerant  - [🧑🏻‍💻](https://github.com/Christgrant98)
-- Cristian  Vargas  - [🧑🏻‍💻](https://github.com/Cristianv10)
-
