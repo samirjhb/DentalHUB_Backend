@@ -1,26 +1,165 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePatientDto } from './dto/create-patient.dto';
 import { UpdatePatientDto } from './dto/update-patient.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Patient, PatientDocument } from './schema/patient.schema';
 
 @Injectable()
 export class PatientService {
-  create(createPatientDto: CreatePatientDto) {
-    return 'This action adds a new patient';
+  constructor(
+    @InjectModel(Patient.name)
+    private readonly patientModel: Model<PatientDocument>,
+  ) {}
+
+  async create(createPatientDto: CreatePatientDto) {
+    try {
+      // Verificar si ya existe un paciente con el mismo RUT
+      const existingPatient = await this.patientModel.findOne({
+        rut: createPatientDto.rut,
+      });
+
+      if (existingPatient) {
+        throw new HttpException('Ya existe un paciente con este RUT', 400);
+      }
+
+      // Crear el nuevo paciente
+      const newPatient = await this.patientModel.create(createPatientDto);
+      return {
+        message: 'Paciente registrado exitosamente',
+        patient: newPatient,
+      };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException(
+        'Error al registrar el paciente: ' + error.message,
+        500,
+      );
+    }
   }
 
-  findAll() {
-    return `This action returns all patient`;
+  async findAll() {
+    try {
+      const patients = await this.patientModel
+        .find()
+        .populate('evaluations')
+        .populate('treatments')
+        .exec();
+
+      return {
+        message: 'Pacientes encontrados',
+        patients,
+      };
+    } catch (error) {
+      throw new HttpException(
+        'Error al buscar pacientes: ' + error.message,
+        500,
+      );
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} patient`;
+  async findOne(id: string) {
+    try {
+      const patient = await this.patientModel
+        .findById(id)
+        .populate('evaluations')
+        .populate('treatments')
+        .exec();
+
+      if (!patient) {
+        throw new NotFoundException(`Paciente con ID ${id} no encontrado`);
+      }
+
+      return {
+        message: 'Paciente encontrado',
+        patient,
+      };
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new HttpException(
+        'Error al buscar el paciente: ' + error.message,
+        500,
+      );
+    }
   }
 
-  update(id: number, updatePatientDto: UpdatePatientDto) {
-    return `This action updates a #${id} patient`;
+  async update(id: string, updatePatientDto: UpdatePatientDto) {
+    try {
+      // Verificar si el paciente existe
+      const existingPatient = await this.patientModel.findById(id);
+
+      if (!existingPatient) {
+        throw new NotFoundException(`Paciente con ID ${id} no encontrado`);
+      }
+
+      // Si se está actualizando el RUT, verificar que no exista otro paciente con ese RUT
+      if (
+        updatePatientDto.rut &&
+        updatePatientDto.rut !== existingPatient.rut
+      ) {
+        const patientWithSameRut = await this.patientModel.findOne({
+          rut: updatePatientDto.rut,
+          _id: { $ne: id },
+        });
+
+        if (patientWithSameRut) {
+          throw new HttpException('Ya existe otro paciente con este RUT', 400);
+        }
+      }
+
+      // Actualizar el paciente
+      const updatedPatient = await this.patientModel
+        .findByIdAndUpdate(id, updatePatientDto, { new: true })
+        .populate('evaluations')
+        .populate('treatments')
+        .exec();
+
+      return {
+        message: 'Paciente actualizado exitosamente',
+        patient: updatedPatient,
+      };
+    } catch (error) {
+      if (
+        error instanceof NotFoundException ||
+        error instanceof HttpException
+      ) {
+        throw error;
+      }
+      throw new HttpException(
+        'Error al actualizar el paciente: ' + error.message,
+        500,
+      );
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} patient`;
+  async remove(id: string) {
+    try {
+      // Verificar si el paciente existe
+      const existingPatient = await this.patientModel.findById(id);
+
+      if (!existingPatient) {
+        throw new NotFoundException(`Paciente con ID ${id} no encontrado`);
+      }
+
+      // Eliminar el paciente
+      await this.patientModel.findByIdAndDelete(id);
+
+      return {
+        message: 'Paciente eliminado exitosamente',
+        patientId: id,
+      };
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new HttpException(
+        'Error al eliminar el paciente: ' + error.message,
+        500,
+      );
+    }
   }
 }
