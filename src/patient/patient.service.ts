@@ -97,17 +97,31 @@ export class PatientService {
       }
 
       // Si se está actualizando el RUT, verificar que no exista otro paciente con ese RUT
-      if (
-        updatePatientDto.rut &&
-        updatePatientDto.rut !== existingPatient.rut
-      ) {
-        const patientWithSameRut = await this.patientModel.findOne({
-          rut: updatePatientDto.rut,
-          _id: { $ne: id },
-        });
+      if (updatePatientDto.rut) {
+        // Solo verificar duplicados si el RUT es diferente al actual
+        if (updatePatientDto.rut !== existingPatient.rut) {
+          console.log(
+            `Verificando RUT ${updatePatientDto.rut} para paciente con ID ${id}`,
+          );
 
-        if (patientWithSameRut) {
-          throw new HttpException('Ya existe otro paciente con este RUT', 400);
+          const patientWithSameRut = await this.patientModel.findOne({
+            rut: updatePatientDto.rut,
+            _id: { $ne: id },
+          });
+
+          if (patientWithSameRut) {
+            console.log(
+              `Encontrado otro paciente con el mismo RUT: ${patientWithSameRut._id}`,
+            );
+            throw new HttpException(
+              'Ya existe otro paciente con este RUT',
+              400,
+            );
+          }
+
+          console.log('No se encontraron pacientes con el mismo RUT');
+        } else {
+          console.log(`El RUT no ha cambiado: ${existingPatient.rut}`);
         }
       }
 

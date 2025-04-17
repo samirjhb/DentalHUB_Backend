@@ -15,17 +15,33 @@ export class AuthService {
   ) {}
 
   async register(userObject: RegisterAuthDto) {
-    const { password } = userObject;
-    const plainToHash = await hash(password, 10);
-    userObject = { ...userObject, password: plainToHash };
-    const newUser = await this.authModel.create(userObject);
+    try {
+      // Verificar si el usuario ya existe
+      const existingUser = await this.authModel.findOne({
+        email: userObject.email,
+      });
+      if (existingUser) {
+        throw new HttpException('El email ya está registrado', 400);
+      }
 
-    const payload = { id: newUser._id, name: newUser.name };
-    const token = this.jwtService.sign(payload);
+      const { password } = userObject;
+      const plainToHash = await hash(password, 10);
+      userObject = { ...userObject, password: plainToHash };
+      const newUser = await this.authModel.create(userObject);
 
-    const data = { user: newUser, token };
+      const payload = { id: newUser._id, name: newUser.name };
+      const token = this.jwtService.sign(payload);
 
-    return data;
+      const data = { user: newUser, token };
+
+      return data;
+    } catch (error) {
+      // Manejar errores de MongoDB
+      if (error.code === 11000) {
+        throw new HttpException('El email ya está registrado', 400);
+      }
+      throw error; // Re-lanzar otros errores
+    }
   }
 
   async login(userObjectLogin: LoginAuthDto) {

@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, HttpException } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { RegisterAuthDto } from './dto/register-auth.dto';
@@ -10,12 +10,20 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('register')
-  handleRegister(@Body() registerBody: RegisterAuthDto) {
+  async handleRegister(@Body() registerBody: RegisterAuthDto) {
     try {
-      //console.log(registerBody);
-      return this.authService.register(registerBody);
+      return await this.authService.register(registerBody);
     } catch (error) {
       console.log('Error en Registar usuario', error);
+      // Devolver el error como respuesta HTTP
+      if (error instanceof HttpException) {
+        throw error; // Re-lanzar HttpException para que NestJS lo maneje
+      } else {
+        throw new HttpException(
+          error.message || 'Error al registrar usuario',
+          error.status || 500,
+        );
+      }
     }
   }
 
