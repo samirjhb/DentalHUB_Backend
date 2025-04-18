@@ -45,7 +45,7 @@ export class PatientService {
       const patients = await this.patientModel
         .find()
         .populate('evaluations')
-        .populate('treatments')
+        .populate('clinicalRecords')
         .exec();
 
       return {
@@ -65,7 +65,7 @@ export class PatientService {
       const patient = await this.patientModel
         .findById(id)
         .populate('evaluations')
-        .populate('treatments')
+        .populate('clinicalRecords')
         .exec();
 
       if (!patient) {
@@ -129,7 +129,7 @@ export class PatientService {
       const updatedPatient = await this.patientModel
         .findByIdAndUpdate(id, updatePatientDto, { new: true })
         .populate('evaluations')
-        .populate('treatments')
+        .populate('clinicalRecords')
         .exec();
 
       return {

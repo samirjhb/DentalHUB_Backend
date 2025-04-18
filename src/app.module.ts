@@ -3,14 +3,12 @@ import { ConfigModule } from '@nestjs/config';
 import { SpecialistModule } from './specialist/specialist.module';
 import { PatientModule } from './patient/patient.module';
 import { DiagnosticEvaluationModule } from './diagnostic-evaluation/diagnostic-evaluation.module';
-import { TreatmentPlanModule } from './treatment-plan/treatment-plan.module';
-import { TreatmentModule } from './treatment/treatment.module';
-import { FollowUpModule } from './follow-up/follow-up.module';
 import { BillingModule } from './billing/billing.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { JwtStrategy } from './auth/utils/jwt.strategy';
 import { WhatsappModule } from './whatsapp/whatsapp.module';
+import { ClinicalRecordModule } from './clinical-record/clinical-record.module';
 
 @Module({
   imports: [
@@ -23,12 +21,10 @@ import { WhatsappModule } from './whatsapp/whatsapp.module';
     SpecialistModule,
     PatientModule,
     DiagnosticEvaluationModule,
-    TreatmentPlanModule,
-    TreatmentModule,
-    FollowUpModule,
     BillingModule,
     AuthModule,
     WhatsappModule,
+    ClinicalRecordModule,
   ],
   controllers: [],
   providers: [JwtStrategy],
