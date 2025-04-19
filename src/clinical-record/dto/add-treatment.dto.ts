@@ -22,11 +22,11 @@ export class AddTreatmentDto {
 
   @ApiProperty({
     description: 'Número de la pieza dental a tratar',
-    example: 36,
+    example: '36',
     required: true,
   })
-  @IsNumber()
-  toothNumber: number;
+  @IsString()
+  toothNumber: string;
 
   @ApiProperty({
     description: 'Tratamiento a realizar',
@@ -74,7 +74,7 @@ export class AddTreatmentDto {
   })
   @IsDate()
   @Type(() => Date)
-  appointmentDate: Date;
+  appointmentDate?: Date;
 
   @ApiProperty({
     description: 'Observaciones adicionales',
