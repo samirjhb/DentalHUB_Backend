@@ -17,7 +17,7 @@ export class Patient {
   @Prop({ required: true })
   email: string;
 
-  @Prop({ required: true })
+  @Prop({ required: false })
   record: string;
 
   @Prop({ required: true })

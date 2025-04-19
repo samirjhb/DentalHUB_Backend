@@ -12,7 +12,7 @@ export class DentalTreatment {
   radiography: string;
 
   @Prop({ required: true })
-  toothNumber: number;
+  toothNumber: string;
 
   @Prop({ required: true })
   treatment: string;
@@ -30,7 +30,7 @@ export class DentalTreatment {
   @Prop({ required: false, default: 0 })
   deposit: number;
 
-  @Prop({ required: true })
+  @Prop({ required: false })
   appointmentDate: Date;
 
   @Prop({ required: false })
