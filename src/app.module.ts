@@ -9,6 +9,8 @@ import { AuthModule } from './auth/auth.module';
 import { JwtStrategy } from './auth/utils/jwt.strategy';
 import { WhatsappModule } from './whatsapp/whatsapp.module';
 import { ClinicalRecordModule } from './clinical-record/clinical-record.module';
+import { CitasModule } from './citas/citas.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -18,6 +20,7 @@ import { ClinicalRecordModule } from './clinical-record/clinical-record.module';
     }),
     //Conection mongodb
     MongooseModule.forRoot(process.env.MONGO_CONNECTION_TEST),
+    ScheduleModule.forRoot(),
     SpecialistModule,
     PatientModule,
     DiagnosticEvaluationModule,
@@ -25,6 +28,7 @@ import { ClinicalRecordModule } from './clinical-record/clinical-record.module';
     AuthModule,
     WhatsappModule,
     ClinicalRecordModule,
+    CitasModule,
   ],
   controllers: [],
   providers: [JwtStrategy],
