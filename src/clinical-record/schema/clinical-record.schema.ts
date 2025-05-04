@@ -8,8 +8,8 @@ export class DentalTreatment {
   @Prop({ required: true })
   diagnosis: string;
 
-  @Prop({ required: false })
-  radiography: string;
+  @Prop({ required: false, type: [String] })
+  radiography: string[];
 
   @Prop({ required: true })
   toothNumber: string;

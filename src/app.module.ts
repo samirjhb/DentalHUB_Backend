@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { JwtStrategy } from './auth/utils/jwt.strategy';
 import { WhatsappModule } from './whatsapp/whatsapp.module';
 import { ClinicalRecordModule } from './clinical-record/clinical-record.module';
+import { AiModule } from './ai/ai.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { ClinicalRecordModule } from './clinical-record/clinical-record.module';
     AuthModule,
     WhatsappModule,
     ClinicalRecordModule,
+    AiModule,
   ],
   controllers: [],
   providers: [JwtStrategy],
