@@ -15,7 +15,13 @@ async function bootstrap() {
 
   // Habilitar CORS
   app.enableCors({
-    origin: ['http://localhost:4200'],
+    origin: [
+      'http://localhost:4200',
+      'http://localhost:80',
+      'http://frontend:80',
+      'http://dental-frontend:80',
+      'http://dental-frontend-prod:80',
+    ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     credentials: true,
   });
