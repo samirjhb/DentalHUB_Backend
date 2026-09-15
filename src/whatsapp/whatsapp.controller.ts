@@ -3,15 +3,23 @@ import {
   Controller,
   Get,
   Post,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { WhatsappService } from './whatsapp.service';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { SendMessageDto } from './dto/send-message.dto';
 import { AlertaCitaDto } from './dto/alerta-cita.dto';
 import { SendTemplateDto } from './dto/send-template.dto';
 import { WhatsappWebhookDto } from './dto/whatsapp-webhook.dto';
+import { JwtAuthGuard } from 'src/auth/utils/jwt-auth.guard';
 
 @ApiTags('Whatsapp')
 @Controller('whatsapp')
@@ -19,6 +27,8 @@ export class WhatsappController {
   constructor(private readonly whatsappService: WhatsappService) {}
 
   @Get('test')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({
     summary: 'Enviar un mensaje de prueba usando la configuración por defecto',
   })
@@ -31,6 +41,8 @@ export class WhatsappController {
   }
 
   @Post('send-message')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({
     summary: 'Enviar un mensaje de WhatsApp a un número específico',
   })
@@ -110,6 +122,8 @@ export class WhatsappController {
   }
 
   @Post('send-template')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({
     summary: 'Enviar un mensaje de plantilla de WhatsApp',
   })
@@ -127,6 +141,8 @@ export class WhatsappController {
   }
 
   @Post('alerta-cita')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Enviar una alerta de cita a un paciente' })
   @ApiResponse({
     status: 200,

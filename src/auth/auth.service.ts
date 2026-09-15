@@ -32,7 +32,9 @@ export class AuthService {
       const payload = { id: newUser._id, name: newUser.name };
       const token = this.jwtService.sign(payload);
 
-      const data = { user: newUser, token };
+      const { password: _password, ...userWithoutPassword } =
+        newUser.toObject();
+      const data = { user: userWithoutPassword, token };
 
       return data;
     } catch (error) {
@@ -55,7 +57,8 @@ export class AuthService {
     const payload = { id: findUser._id, name: findUser.name };
     const token = this.jwtService.sign(payload);
 
-    const data = { user: findUser, token };
+    const { password: _password, ...userWithoutPassword } = findUser.toObject();
+    const data = { user: userWithoutPassword, token };
 
     return data;
   }
