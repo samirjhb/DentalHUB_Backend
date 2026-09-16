@@ -9,8 +9,15 @@ import {
   Query,
   HttpStatus,
   HttpCode,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiParam,
+} from '@nestjs/swagger';
 import { ClinicalRecordService } from './clinical-record.service';
 import { CreateClinicalRecordDto } from './dto/create-clinical-record.dto';
 import { UpdateClinicalRecordDto } from './dto/update-clinical-record.dto';
@@ -19,7 +26,10 @@ import { AddDepositDto } from './dto/add-deposit.dto';
 import { UpdateAppointmentDateDto } from './dto/update-appointment-date.dto';
 import { AddTreatmentDto } from './dto/add-treatment.dto';
 import { FilterClinicalRecordDto } from './dto/filter-clinical-record.dto';
+import { JwtAuthGuard } from 'src/auth/utils/jwt-auth.guard';
 
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @ApiTags('Ficha Clínica')
 @Controller('clinical-record')
 export class ClinicalRecordController {
