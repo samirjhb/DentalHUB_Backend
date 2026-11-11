@@ -18,7 +18,11 @@ import { AiModule } from './ai/ai.module';
       isGlobal: true,
     }),
     //Conection mongodb
-    MongooseModule.forRoot(process.env.MONGO_CONNECTION_TEST),
+    MongooseModule.forRoot(
+      process.env.NODE_ENV === 'production'
+        ? process.env.MONGO_CONNECTION_PRODUCTION
+        : process.env.MONGO_CONNECTION_TEST,
+    ),
     SpecialistModule,
     PatientModule,
     DiagnosticEvaluationModule,

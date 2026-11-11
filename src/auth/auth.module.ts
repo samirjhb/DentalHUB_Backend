@@ -4,7 +4,7 @@ import { AuthController } from './auth.controller';
 import { Auth, AuthSchema } from './entities/auth.entity';
 import { MongooseModule } from '@nestjs/mongoose';
 import { JwtModule } from '@nestjs/jwt';
-import { jwtConstanst } from './utils/jwt.constants';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -16,9 +16,13 @@ import { jwtConstanst } from './utils/jwt.constants';
       },
     ]),
     //time  expire
-    JwtModule.register({
-      secret: jwtConstanst.secret,
-      signOptions: { expiresIn: '20h' },
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.get<string>('JWT_SECRET'),
+        signOptions: { expiresIn: '20h' },
+      }),
     }),
   ],
   controllers: [AuthController],
